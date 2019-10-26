@@ -2,6 +2,12 @@ require 'byebug-rails-loader/version'
 require 'byebug/core'
 require 'byebug-rails-loader/railtie'
 
+if ENV["RAILS_ENV"] == 'test'
+  if Gem.loaded_specs.has_key?('minitest')
+    require 'byebug-rails-loader/minitest'
+  end
+end
+
 module ByebugRailsLoader
   class << self
     def load_byebug
