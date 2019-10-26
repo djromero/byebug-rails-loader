@@ -1,13 +1,20 @@
+# frozen_string_literal: true
+
 require 'rails'
 
-module ByebugRailsLoader 
+module ByebugRailsLoader
   class Railtie < Rails::Railtie
-    initializer 'byebuy-rails-loader-initialize' do |app|
-      app.reloaders << ActiveSupport::FileUpdateChecker.new([Rails.root.join(".byebugrc")])
-    end
+    initializer 'byebug-rails-loader-initializer' do |app|
+      paths = [Rails.root.join('.byebugrc')]
+      byebug_reloader = ActiveSupport::FileUpdateChecker.new(paths) do
+        ByebugRailsLoader.rerun_init_script
+      end
 
-    config.to_prepare do
-      ByebugRailsLoader.load_byebug
+      app.reloaders << byebug_reloader
+
+      config.to_prepare do
+        byebug_reloader.execute_if_updated
+      end
     end
   end
 end

@@ -1,5 +1,5 @@
 require 'byebug-rails-loader/version'
-require 'byebug'
+require 'byebug/core'
 require 'byebug-rails-loader/railtie'
 
 module ByebugRailsLoader
@@ -10,8 +10,13 @@ module ByebugRailsLoader
       Byebug.breakpoints.clear
       Byebug.run_init_script
     end
-  end
+
+    def rerun_init_script
+      Byebug.breakpoints.clear
+      Byebug.run_init_script
+      STDERR.puts("[ByeBug] 🐞 Breakpoints reloaded")
+    end end
 end
 
-# load byebug when the gem is loaded
+# Load byebug when the gem is loaded.
 ByebugRailsLoader.load_byebug
