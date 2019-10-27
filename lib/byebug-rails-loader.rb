@@ -20,7 +20,6 @@ module ByebugRailsLoader
     def rerun_init_script
       Byebug.breakpoints.clear
       Byebug.run_init_script
-      STDERR.puts("[ByeBug] 🐞 Breakpoints reloaded")
     end end
 end
 
